@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "411461886190",
+    "project_id": "fosszen-weather",
+    "storage_bucket": "fosszen-weather.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:411461886190:android:45a00b9c2d497923b813ff",
+        "android_client_info": {
+          "package_name": "com.example.fosszen_weather"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD0e1nG_F76zC6FKSCMty9ZMBPPvrjuZ6Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
