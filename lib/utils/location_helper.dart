@@ -1,7 +1,20 @@
 import 'package:flutter/foundation.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 
 class LocationHelper {
+  static Future<String?> getCityName(Position position) async {
+    try {
+      List<Placemark> placemarks = await placemarkFromCoordinates(position.latitude, position.longitude);
+      if (placemarks.isNotEmpty) {
+        return placemarks[0].locality ?? placemarks[0].subAdministrativeArea;
+      }
+    } catch (e) {
+      print('Error getting city name: $e');
+    }
+    return null;
+  }
+
   static Future<Position?> getCurrentLocation() async {
     try {
       LocationPermission permission = await Geolocator.checkPermission();
