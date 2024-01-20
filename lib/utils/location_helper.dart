@@ -25,7 +25,7 @@ class LocationHelper {
       if (permission == LocationPermission.always || permission == LocationPermission.whileInUse) {
         return await Geolocator.getCurrentPosition();
       } else {
-        return null; // Permission denied
+        return null;
       }
     } catch (e) {
       debugPrint('Error getting location: $e');

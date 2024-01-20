@@ -78,7 +78,6 @@ class _WeatherScreenState extends State<WeatherScreen> {
                             const SizedBox(height: 8),
                             Text('Temperature: ${dailyData['temp']['day']} °C'),
                             Text('Weather: ${dailyData['weather'][0]['description']}'),
-                            // Add more fields as needed, e.g., wind speed, humidity, etc.
                           ],
                         ),
                       ),
