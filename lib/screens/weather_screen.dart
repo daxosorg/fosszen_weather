@@ -41,7 +41,6 @@ class _WeatherScreenState extends State<WeatherScreen> {
                       weatherData = data;
                       isLoading = false;
                     });
-                    debugPrint(weatherData.toString());
                   } catch (e) {
                     debugPrint('Error fetching weather data: $e');
                     setState(() {
@@ -55,33 +54,50 @@ class _WeatherScreenState extends State<WeatherScreen> {
                   });
                 }
               },
-              child: const Text('Get Weather for Current Location'),
+              child: const Text('Get 7-Day Forecast for Current Location'),
             ),
             const SizedBox(height: 20),
             if (isLoading)
               const CircularProgressIndicator()
             else if (weatherData.isNotEmpty)
-              Column(
-                children: [
-                  Text('Temperature: ${weatherData['main']['temp']} °C'),
-                  Text('Weather: ${weatherData['weather'][0]['description']}'),
-                  Text('Wind Speed: ${weatherData['wind']['speed']} m/s'),
-                  const SizedBox(height: 20),
-                  ElevatedButton(
-                    onPressed: () async {
-                      // Add current location to favorites
-                      Position? userLocation = await LocationHelper.getCurrentLocation();
-                      if (userLocation != null) {
-                        String? cityName = await LocationHelper.getCityName(userLocation);
-                        await favoritesService.addFavorite(cityName ?? "Empty City name");
-                        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Location added to favorites')));
-                      }
-                    },
-                    child: const Text('Add to Favorites'),
-                  ),
-                ],
+              Expanded(
+                child: ListView.builder(
+                  itemCount: weatherData['daily'].length,
+                  itemBuilder: (context, index) {
+                    final dailyData = weatherData['daily'][index];
+                    return Card(
+                      child: Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Day ${index + 1}',
+                              style: const TextStyle(fontSize: 18),
+                            ),
+                            const SizedBox(height: 8),
+                            Text('Temperature: ${dailyData['temp']['day']} °C'),
+                            Text('Weather: ${dailyData['weather'][0]['description']}'),
+                            // Add more fields as needed, e.g., wind speed, humidity, etc.
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                ),
               ),
-            if (!isLoading && weatherData.isEmpty) const Text('Press the button to fetch weather data'),
+            const SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: () async {
+                Position? userLocation = await LocationHelper.getCurrentLocation();
+                if (userLocation != null) {
+                  String? cityName = await LocationHelper.getCityName(userLocation);
+                  await favoritesService.addFavorite(cityName ?? "Empty City name");
+                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Location added to favorites')));
+                }
+              },
+              child: const Text('Add to Favorites'),
+            ),
             ElevatedButton(
               onPressed: () {
                 Navigator.push(
